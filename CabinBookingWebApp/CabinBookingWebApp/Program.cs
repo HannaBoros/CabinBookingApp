@@ -3,11 +3,14 @@ using Microsoft.Extensions.DependencyInjection;
 using CabinBookingWebApp.Data;
 using CabinBookingWebApp.Models;
 using System.Web;
+using Microsoft.AspNetCore.Identity;
 var builder = WebApplication.CreateBuilder(args);
-
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<CabinBookingWebAppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CabinBookingWebAppContext")));
-//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<CabinBookingWebAppContext>();builder.Services.AddDbContext<CabinBookingWebAppContext>(options =>
+    options.UseSqlServer(connectionString));//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -32,12 +35,13 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 //app.UseCoreAdminCustomUrl("SuperAdmin");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapRazorPages();
 app.Run();
 

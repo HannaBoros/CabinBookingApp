@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CabinBookingWebApp.Data;
 using CabinBookingWebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CabinBookingWebApp.Controllers
 {
+    [Authorize]
     public class BookingsController : Controller
     {
         private readonly CabinBookingWebAppContext _context;
