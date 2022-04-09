@@ -6,10 +6,13 @@ namespace CabinBookingWebApp.Models
 {
     public class User
     {
+        [Key]
         public int Id { get; set; }
 
         [StringLength(60, MinimumLength = 3)]
         [Required]
+
+        
         public string Name { get; set; }
 
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")]
@@ -20,8 +23,11 @@ namespace CabinBookingWebApp.Models
 
         [Display(Name = "Phone Number")]
         [DataType(DataType.PhoneNumber)]
-        public string PhoneNumber { get; set; } 
-        
-        public ICollection<Booking> Bookings { get; set; }
+        public string PhoneNumber { get; set; }
+        public override string ToString()
+        {
+            return Name;
+        }
+
     }
 }

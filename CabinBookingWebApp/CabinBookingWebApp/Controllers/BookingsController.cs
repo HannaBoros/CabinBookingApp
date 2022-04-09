@@ -58,7 +58,7 @@ namespace CabinBookingWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,CheckInDate,CheckOutDate,Price")] Booking booking)
+        public async Task<IActionResult> Create([Bind("Id,CheckInDate,CheckOutDate,Price,UserId")] Booking booking)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace CabinBookingWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,CheckInDate,CheckOutDate,Price")] Booking booking)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CheckInDate,CheckOutDate,Price,UserId")] Booking booking)
         {
             if (id != booking.Id)
             {
