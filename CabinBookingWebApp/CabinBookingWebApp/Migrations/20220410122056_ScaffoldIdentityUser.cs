@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CabinBookingWebApp.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class ScaffoldIdentityUser : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

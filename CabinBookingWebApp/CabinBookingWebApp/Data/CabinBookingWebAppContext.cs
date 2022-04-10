@@ -6,19 +6,24 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using CabinBookingWebApp.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CabinBookingWebApp.Data
 {
-    public class CabinBookingWebAppContext : IdentityDbContext
+    public class CabinBookingWebAppContext : IdentityDbContext<ApplicationUser>
     {
         public CabinBookingWebAppContext (DbContextOptions<CabinBookingWebAppContext> options)
             : base(options)
         {
         }
 
-        public DbSet<CabinBookingWebApp.Models.User> User { get; set; }
+       public DbSet<User> User { get; set; }
 
-        public DbSet<CabinBookingWebApp.Models.Booking> Booking { get; set; }
+       public DbSet<Booking> Booking { get; set; }
+
+
+       public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        
 
        
     }

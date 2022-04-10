@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CabinBookingWebApp.Migrations
 {
     [DbContext(typeof(CabinBookingWebAppContext))]
-    [Migration("20220409134805_CreateIdentitySchema")]
-    partial class CreateIdentitySchema
+    [Migration("20220410122056_ScaffoldIdentityUser")]
+    partial class ScaffoldIdentityUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
