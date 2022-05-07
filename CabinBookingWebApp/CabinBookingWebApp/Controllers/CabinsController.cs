@@ -11,22 +11,22 @@ using CabinBookingWebApp.Models;
 
 namespace CabinBookingWebApp.Controllers
 {
-    public class UsersController : Controller
+    public class CabinsController : Controller
     {
         private readonly CabinBookingWebAppContext _context;
 
-        public UsersController(CabinBookingWebAppContext context)
+        public CabinsController(CabinBookingWebAppContext context)
         {
             _context = context;
         }
 
-        // GET: Users
+        // GET: Cabins
         public async Task<IActionResult> Index()
         {
-            return View(await _context.User.ToListAsync());
+            return View(await _context.Cabins.ToListAsync());
         }
 
-        // GET: Users/Details/5
+        // GET: Cabins/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,39 +34,39 @@ namespace CabinBookingWebApp.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User
+            var cabin = await _context.Cabins
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
+            if (cabin == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(cabin);
         }
 
-        // GET: Users/Create
+        // GET: Cabins/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Cabins/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,EmailAddress,PhoneNumber")] User user)
+        public async Task<IActionResult> Create([Bind("Id,Description,Location,Rooms,Price")] Cabin cabin)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
+                _context.Add(cabin);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View(cabin);
         }
 
-        // GET: Users/Edit/5
+        // GET: Cabins/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +74,22 @@ namespace CabinBookingWebApp.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
+            var cabin = await _context.Cabins.FindAsync(id);
+            if (cabin == null)
             {
                 return NotFound();
             }
-            return View(user);
+            return View(cabin);
         }
 
-        // POST: Users/Edit/5
+        // POST: Cabins/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,EmailAddress,PhoneNumber")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,Location,Rooms,Price")] Cabin cabin)
         {
-            if (id != user.Id)
+            if (id != cabin.Id)
             {
                 return NotFound();
             }
@@ -98,12 +98,12 @@ namespace CabinBookingWebApp.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    _context.Update(cabin);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.Id))
+                    if (!CabinExists(cabin.Id))
                     {
                         return NotFound();
                     }
@@ -114,10 +114,10 @@ namespace CabinBookingWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View(cabin);
         }
 
-        // GET: Users/Delete/5
+        // GET: Cabins/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,30 +125,30 @@ namespace CabinBookingWebApp.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User
+            var cabin = await _context.Cabins
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
+            if (cabin == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(cabin);
         }
 
-        // POST: Users/Delete/5
+        // POST: Cabins/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var user = await _context.User.FindAsync(id);
-            _context.User.Remove(user);
+            var cabin = await _context.Cabins.FindAsync(id);
+            _context.Cabins.Remove(cabin);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(int id)
+        private bool CabinExists(int id)
         {
-            return _context.User.Any(e => e.Id == id);
+            return _context.Cabins.Any(e => e.Id == id);
         }
     }
 }

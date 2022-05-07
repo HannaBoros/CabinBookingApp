@@ -21,9 +21,15 @@ namespace CabinBookingWebApp.Models
         public int Price { get; set; }
 
         [Display(AutoGenerateField = false)]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public User? User { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public int CabinId { get; set; }
+
+        [ForeignKey("CabinId")]
+        public Cabin Cabin { get; set; }
     }
 }

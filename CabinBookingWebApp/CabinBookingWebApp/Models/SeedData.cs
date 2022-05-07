@@ -31,61 +31,55 @@ namespace CabinBookingWebApp.Models
 
                 //SeedDB(context, adminID);
             }
-                using (var context = new CabinBookingWebAppContext(
-                serviceProvider.GetRequiredService<
-                    DbContextOptions<CabinBookingWebAppContext>>()))
+            using (var context = new CabinBookingWebAppContext(
+            serviceProvider.GetRequiredService<
+                DbContextOptions<CabinBookingWebAppContext>>()))
             {
-                
+
                 // Look for any users.
-                if (context.User.Any())
-                {
-                    return;   // DB has been seeded
-                }
-                User user_with_booking = new User
-                {
+                //if (context.User.Any())
+                //{
+                //    return;   // DB has been seeded
+                //}
 
-                    Name = "Hanna",
-                    EmailAddress = "hannaboros@gmail.com",
-                    PhoneNumber = "0773786458",
-                };
-                context.User.AddRange(
-                    //user_with_booking,
+                //context.User.AddRange(
+                //user_with_booking,
 
-                    //new User
-                    //{
-                      
-                    //    Name = "Hanni",
-                    //    EmailAddress = "hanni@gmail.com",
-                    //    PhoneNumber = "0773786321",
-                    //},
+                //new User
+                //{
 
-                    //new User
-                    //{
-                       
-                    //    Name = "Andreea",
-                    //    EmailAddress = "andreea@gmail.com",
-                    //    PhoneNumber = "0771236458",
-                    //},
+                //    Name = "Hanni",
+                //    EmailAddress = "hanni@gmail.com",
+                //    PhoneNumber = "0773786321",
+                //},
 
-                    new User
-                    {
-                        
-                        Name = "Kiara",
-                        EmailAddress = "kiarasmith@gmail.com",
-                        PhoneNumber = "0773234858",
-                    }
-                );
+                //new User
+                //{
 
-               context.Booking.AddRange(
-                   new Booking
-                   {
-                        CheckInDate = DateTime.Now,
-                        CheckOutDate = DateTime.Now,
-                        User = user_with_booking,
-                        Price = 300
+                //    Name = "Andreea",
+                //    EmailAddress = "andreea@gmail.com",
+                //    PhoneNumber = "0771236458",
+                //},
 
-                   }
-               );
+                //new User
+                //{
+
+                //    Name = "Kiara",
+                //    EmailAddress = "kiarasmith@gmail.com",
+                //    PhoneNumber = "0773234858",
+                //}
+                //); 
+
+               //context.Booking.AddRange(
+               //    new Booking
+               //    {
+               //         CheckInDate = DateTime.Now,
+               //         CheckOutDate = DateTime.Now,
+               //         User = user_with_booking,
+               //         Price = 300
+
+               //    }
+               //);
 
                 context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Booking ON;");
                 context.SaveChanges();

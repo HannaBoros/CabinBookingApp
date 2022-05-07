@@ -8,11 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CabinBookingWebApp.Data;
 using CabinBookingWebApp.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace CabinBookingWebApp.Controllers
 {
-    [Authorize]
     public class BookingsController : Controller
     {
         private readonly CabinBookingWebAppContext _context;
@@ -25,7 +23,7 @@ namespace CabinBookingWebApp.Controllers
         // GET: Bookings
         public async Task<IActionResult> Index()
         {
-            var cabinBookingWebAppContext = _context.Booking.Include(b => b.User);
+            var cabinBookingWebAppContext = _context.Booking.Include(b => b.ApplicationUser).Include(b => b.Cabin);
             return View(await cabinBookingWebAppContext.ToListAsync());
         }
 
@@ -38,7 +36,8 @@ namespace CabinBookingWebApp.Controllers
             }
 
             var booking = await _context.Booking
-                .Include(b => b.User)
+                .Include(b => b.ApplicationUser)
+                .Include(b => b.Cabin)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (booking == null)
             {
@@ -51,7 +50,8 @@ namespace CabinBookingWebApp.Controllers
         // GET: Bookings/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "EmailAddress");
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
+            ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Id");
             return View();
         }
 
@@ -60,7 +60,7 @@ namespace CabinBookingWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CheckInDate,CheckOutDate,Price,UserId")] Booking booking)
+        public async Task<IActionResult> Create([Bind("Id,CheckInDate,CheckOutDate,Price,UserId,CabinId")] Booking booking)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +68,8 @@ namespace CabinBookingWebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "EmailAddress", booking.UserId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", booking.UserId);
+            ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Id", booking.CabinId);
             return View(booking);
         }
 
@@ -85,7 +86,8 @@ namespace CabinBookingWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "EmailAddress", booking.UserId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", booking.UserId);
+            ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Id", booking.CabinId);
             return View(booking);
         }
 
@@ -94,7 +96,7 @@ namespace CabinBookingWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CheckInDate,CheckOutDate,Price,UserId")] Booking booking)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CheckInDate,CheckOutDate,Price,UserId,CabinId")] Booking booking)
         {
             if (id != booking.Id)
             {
@@ -121,7 +123,8 @@ namespace CabinBookingWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "EmailAddress", booking.UserId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", booking.UserId);
+            ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Id", booking.CabinId);
             return View(booking);
         }
 
@@ -134,7 +137,8 @@ namespace CabinBookingWebApp.Controllers
             }
 
             var booking = await _context.Booking
-                .Include(b => b.User)
+                .Include(b => b.ApplicationUser)
+                .Include(b => b.Cabin)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (booking == null)
             {

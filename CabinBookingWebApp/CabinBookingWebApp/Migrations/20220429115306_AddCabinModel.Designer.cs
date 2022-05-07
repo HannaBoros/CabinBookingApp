@@ -4,6 +4,7 @@ using CabinBookingWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CabinBookingWebApp.Migrations
 {
     [DbContext(typeof(CabinBookingWebAppContext))]
-    partial class CabinBookingWebAppContextModelSnapshot : ModelSnapshot
+    [Migration("20220429115306_AddCabinModel")]
+    partial class AddCabinModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,7 +119,7 @@ namespace CabinBookingWebApp.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Booking", (string)null);
+                    b.ToTable("Booking");
                 });
 
             modelBuilder.Entity("CabinBookingWebApp.Models.Cabin", b =>
@@ -143,7 +145,7 @@ namespace CabinBookingWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cabins", (string)null);
+                    b.ToTable("Cabins");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

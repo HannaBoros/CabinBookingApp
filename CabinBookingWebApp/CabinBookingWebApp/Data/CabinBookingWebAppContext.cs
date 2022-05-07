@@ -17,12 +17,12 @@ namespace CabinBookingWebApp.Data
         {
         }
 
-       public DbSet<User> User { get; set; }
-
        public DbSet<Booking> Booking { get; set; }
 
 
        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
+        public DbSet<Cabin> Cabins { get; set; }
         
 
        
