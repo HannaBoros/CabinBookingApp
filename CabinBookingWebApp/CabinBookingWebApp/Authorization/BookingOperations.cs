@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CabinBookingWebApp.Models
+namespace CabinBookingWebApp.Authorization
 {
-
-    public static class ContactOperations
+    public static class BookingOperations
     {
         public static OperationAuthorizationRequirement Create =
           new OperationAuthorizationRequirement { Name = Constants.CreateOperationName };
@@ -21,7 +18,7 @@ namespace CabinBookingWebApp.Models
           new OperationAuthorizationRequirement { Name = Constants.RejectOperationName };
     }
 
-    public  class Constants
+    public class Constants
     {
         public static readonly string CreateOperationName = "Create";
         public static readonly string ReadOperationName = "Read";
@@ -30,13 +27,8 @@ namespace CabinBookingWebApp.Models
         public static readonly string ApproveOperationName = "Approve";
         public static readonly string RejectOperationName = "Reject";
 
-       
-    }
-    [NotMapped]
-    public  class ApplicationRole:IdentityRole
-    {
-        public static readonly string AdministratorsRole = "Administrators";
-        public static readonly string ManagersRole = "Managers";
-        public static readonly string UsersRole = "Users";
+        public static readonly string BookingAdministratorsRole ="BookingAdministrators";
+      //  public static readonly string ContactManagersRole = "ContactManagers";
     }
 }
+

@@ -4,6 +4,7 @@ using CabinBookingWebApp.Data;
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
+using CabinBookingWebApp.Authorization;
 
 
 namespace CabinBookingWebApp.Models
@@ -18,18 +19,19 @@ namespace CabinBookingWebApp.Models
                    DbContextOptions<CabinBookingWebAppContext>>()))
             {
                 var testUserPw = "Hello7$";
+                //var testManagerPw = "Hello8$";
                 var adminID = await EnsureUser(serviceProvider, testUserPw, "superadmin@contoso.com");
-                Console.WriteLine(adminID);
-                await EnsureRole(serviceProvider, adminID, ApplicationRole.AdministratorsRole);
+                //Console.WriteLine(adminID);
+                await EnsureRole(serviceProvider, adminID, Constants.BookingAdministratorsRole);
 
                 // allowed user can create and edit contacts that they create
-                var managerID = await EnsureUser(serviceProvider, testUserPw, "manager@contoso.com");
-                await EnsureRole(serviceProvider, managerID, ApplicationRole.ManagersRole);
+                //var managerID = await EnsureUser(serviceProvider, testUserPw, "manager@contoso.com");
+                //await EnsureRole(serviceProvider, managerID, ApplicationRole.ManagersRole);
 
-                var userID = await EnsureUser(serviceProvider, testUserPw, "user@contoso.com");
-                await EnsureRole(serviceProvider, userID, ApplicationRole.UsersRole);
+                //var userID = await EnsureUser(serviceProvider, testUserPw, "user@contoso.com");
+                //await EnsureRole(serviceProvider, userID, ApplicationRole.UsersRole);
 
-                //SeedDB(context, adminID);
+                SeedDB(context, adminID);
             }
             using (var context = new CabinBookingWebAppContext(
             serviceProvider.GetRequiredService<
@@ -70,32 +72,32 @@ namespace CabinBookingWebApp.Models
                 //}
                 //); 
 
-               //context.Booking.AddRange(
-               //    new Booking
-               //    {
-               //         CheckInDate = DateTime.Now,
-               //         CheckOutDate = DateTime.Now,
-               //         User = user_with_booking,
-               //         Price = 300
+                //context.Booking.AddRange(
+                //    new Booking
+                //    {
+                //         CheckInDate = DateTime.Now,
+                //         CheckOutDate = DateTime.Now,
+                //         User = user_with_booking,
+                //         Price = 300
 
-               //    }
-               //);
+                //    }
+                //);
 
                 context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Booking ON;");
                 context.SaveChanges();
 
             }
-       
+
         }
         private static async Task<string> EnsureUser(IServiceProvider serviceProvider,
                                             string testUserPw, string UserName)
         {
-            var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
+            var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
 
             var user = await userManager.FindByNameAsync(UserName);
             if (user == null)
             {
-                user = new IdentityUser
+                user = new ApplicationUser
                 {
                     UserName = UserName,
                     EmailConfirmed = true
@@ -127,7 +129,7 @@ namespace CabinBookingWebApp.Models
                 IR = await roleManager.CreateAsync(new IdentityRole(role));
             }
 
-            var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
+            var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
 
             //if (userManager == null)
             //{
@@ -145,5 +147,26 @@ namespace CabinBookingWebApp.Models
 
             return IR;
         }
-    }
+
+        public static void SeedDB(CabinBookingWebAppContext context, string adminID)
+        {
+            if (context.Booking.Any())
+            {
+                return;   // DB has been seeded
+            }
+
+            context.Booking.AddRange(
+                new Booking
+                {
+                    CheckInDate = DateTime.Now,
+                    CheckOutDate = DateTime.Now,
+                    Price = 100,
+                    CabinId = 2,
+                    Status = BookingStatus.Approved,
+                    UserId = adminID
+                });
+
+
+        }   
+    }   
 }

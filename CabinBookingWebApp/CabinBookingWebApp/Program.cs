@@ -6,6 +6,7 @@ using System.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using CabinBookingWebApp.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +50,13 @@ builder.Services.AddAuthorization(options =>
     .Build();
 });
 
+builder.Services.AddScoped<IAuthorizationHandler,
+                      BookingIsOwnerAuthorizationHandler>();
+
+builder.Services.AddSingleton<IAuthorizationHandler,
+                     BookingAdministratorsAuthorizationHandler>();
+
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     // Cookie settings
@@ -63,10 +71,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddCoreAdmin();
-builder.Services.AddRazorPages(options=>
-{
-//    options.Conventions.AllowAnonymousToFolder("/Identity/Pages/Account");
-});
+builder.Services.AddRazorPages();
 
 
 //builder.Services.AddControllers(config =>
@@ -77,16 +82,17 @@ builder.Services.AddRazorPages(options=>
 //    config.Filters.Add(new AuthorizeFilter(policy));
 //});
 
+
 var app = builder.Build();
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    var context = services.GetRequiredService<CabinBookingWebAppContext>();
-//    context.Database.Migrate();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<CabinBookingWebAppContext>();
+    context.Database.Migrate();
 
 
-//    await SeedData.InitializeAsync(services);
-//}
+    await SeedData.InitializeAsync(services);
+}
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
