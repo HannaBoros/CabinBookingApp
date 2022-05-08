@@ -50,8 +50,8 @@ namespace CabinBookingWebApp.Controllers
         // GET: Bookings/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
-            ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Email");
+            ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Description");
             return View();
         }
 
@@ -68,8 +68,8 @@ namespace CabinBookingWebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", booking.UserId);
-            ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Id", booking.CabinId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Email", booking.UserId);
+            ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Description", booking.CabinId);
             return View(booking);
         }
 

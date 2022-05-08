@@ -9,11 +9,11 @@ namespace CabinBookingWebApp.Models
         [Display(AutoGenerateField = false)]
         [Key]
         public int Id { get; set; }
-      
+
         [DataType(DataType.Date)]
         public DateTime CheckInDate { get; set; }
         [DataType(DataType.Date)]
-        public DateTime CheckOutDate { get; set; }        
+        public DateTime CheckOutDate { get; set; }
 
         //[DataType(DataType.Currency)]
         //[Column(TypeName = "decimal(5, 2)")]
@@ -21,15 +21,23 @@ namespace CabinBookingWebApp.Models
         public int Price { get; set; }
 
         [Display(AutoGenerateField = false)]
+        [ForeignKey("ApplicationUser")]
         public string UserId { get; set; }
-
-        [ForeignKey("UserId")]
-        public ApplicationUser ApplicationUser { get; set; }
+        public virtual ApplicationUser? ApplicationUser { get; set; }
 
         [Display(AutoGenerateField = false)]
-        public int CabinId { get; set; }
 
-        [ForeignKey("CabinId")]
-        public Cabin Cabin { get; set; }
+        [ForeignKey("Cabin")]
+        public int CabinId { get; set; }
+        public virtual Cabin? Cabin { get; set; }
+
+        public BookingStatus? Status { get; set; }
+    }
+
+    public enum BookingStatus
+    {
+        Submitted,
+        Approved,
+        Rejected
     }
 }

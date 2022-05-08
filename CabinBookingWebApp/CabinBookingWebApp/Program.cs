@@ -4,21 +4,22 @@ using CabinBookingWebApp.Data;
 using CabinBookingWebApp.Models;
 using System.Web;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
-
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("CabinBookingWebAppContext");
 builder.Services.AddDbContext<CabinBookingWebAppContext>(options =>
     options.UseSqlServer(connectionString));
+//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<CabinBookingWebAppContext>()
     .AddDefaultUI()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    ;
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -41,6 +42,13 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = true;
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+    .RequireAuthenticatedUser()
+    .Build();
+});
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     // Cookie settings
@@ -51,17 +59,16 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.SlidingExpiration = true;
 });
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddCoreAdmin();
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options=>
+{
+//    options.Conventions.AllowAnonymousToFolder("/Identity/Pages/Account");
+});
 
-//builder.Services.AddAuthorization(options =>
-//{
-//    options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
-//    .RequireAuthenticatedUser()
-//    .Build();
-//});
+
 //builder.Services.AddControllers(config =>
 //{
 //    var policy = new AuthorizationPolicyBuilder()
@@ -93,7 +100,6 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 //app.UseCoreAdminCustomUrl("SuperAdmin");
