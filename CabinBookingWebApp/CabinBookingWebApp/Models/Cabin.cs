@@ -11,6 +11,7 @@ namespace CabinBookingWebApp.Models
         public string Location { get; set; }
         public int Rooms { get; set; }
         public int Price { get; set; }
+   
 
         public ICollection<Booking>? Bookings { get; set; }
                             

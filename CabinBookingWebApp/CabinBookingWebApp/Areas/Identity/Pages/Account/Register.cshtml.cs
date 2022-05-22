@@ -38,6 +38,7 @@ namespace CabinBookingWebApp.Areas.Identity.Pages.Account
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
+            
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -104,6 +105,7 @@ namespace CabinBookingWebApp.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
