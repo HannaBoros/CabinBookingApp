@@ -18,11 +18,11 @@ namespace CabinBookingWebApp.Models
                serviceProvider.GetRequiredService<
                    DbContextOptions<CabinBookingWebAppContext>>()))
             {
-                var testUserPw = "Hello7$";
+                var testUserPw = "AdMiN7$#";
                 //var testManagerPw = "Hello8$";
-                var adminID = await EnsureUser(serviceProvider, testUserPw, "superadmin@contoso.com");
+                var user = await EnsureUser(serviceProvider, testUserPw, "superadmin@contoso.com");
                 //Console.WriteLine(adminID);
-                await EnsureRole(serviceProvider, adminID, Constants.BookingAdministratorsRole);
+                await EnsureRole(serviceProvider, user.Email, Constants.BookingAdministratorsRole);
 
                 // allowed user can create and edit contacts that they create
                 //var managerID = await EnsureUser(serviceProvider, testUserPw, "manager@contoso.com");
@@ -31,7 +31,7 @@ namespace CabinBookingWebApp.Models
                 //var userID = await EnsureUser(serviceProvider, testUserPw, "user@contoso.com");
                 //await EnsureRole(serviceProvider, userID, ApplicationRole.UsersRole);
 
-                SeedDB(context, adminID);
+                SeedDB(context, user.Id);
             }
             using (var context = new CabinBookingWebAppContext(
             serviceProvider.GetRequiredService<
@@ -83,13 +83,13 @@ namespace CabinBookingWebApp.Models
                 //    }
                 //);
 
-                context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Booking ON;");
-                context.SaveChanges();
+                //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Booking ON;");
+                
 
             }
 
         }
-        private static async Task<string> EnsureUser(IServiceProvider serviceProvider,
+        private static async Task<ApplicationUser> EnsureUser(IServiceProvider serviceProvider,
                                             string testUserPw, string UserName)
         {
             var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
@@ -100,6 +100,7 @@ namespace CabinBookingWebApp.Models
                 user = new ApplicationUser
                 {
                     UserName = UserName,
+                    Email= UserName,
                     EmailConfirmed = true
                 };
                 await userManager.CreateAsync(user, testUserPw);
@@ -110,7 +111,7 @@ namespace CabinBookingWebApp.Models
                 throw new Exception("The password is probably not strong enough!");
             }
 
-            return user.Id;
+            return user;
         }
 
         private static async Task<IdentityResult> EnsureRole(IServiceProvider serviceProvider,
@@ -131,12 +132,13 @@ namespace CabinBookingWebApp.Models
 
             var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
 
-            //if (userManager == null)
-            //{
-            //    throw new Exception("userManager is null");
-            //}
+            if (userManager == null)
+            {
+                throw new Exception("userManager is null");
+            }
 
-            var user = await userManager.FindByIdAsync(uid);
+            //var user = await userManager.FindByIdAsync(uid);
+            var user = await userManager.FindByEmailAsync(uid);
 
             if (user == null)
             {
@@ -163,10 +165,11 @@ namespace CabinBookingWebApp.Models
                     Price = 100,
                     CabinId = 2,
                     Status = BookingStatus.Approved,
-                    UserId = adminID
+                    UserId = adminID,
+                    
                 });
 
-
+            context.SaveChanges();
         }   
     }   
 }

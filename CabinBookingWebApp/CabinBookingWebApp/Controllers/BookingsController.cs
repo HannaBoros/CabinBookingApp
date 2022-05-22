@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CabinBookingWebApp.Data;
 using CabinBookingWebApp.Models;
 
-namespace CabinBookingWebApp.Controllers
+namespace CabinBookingWebApp
 {
     public class BookingsController : Controller
     {
@@ -30,7 +29,7 @@ namespace CabinBookingWebApp.Controllers
         // GET: Bookings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (id == null || _context.Booking == null)
             {
                 return NotFound();
             }
@@ -52,6 +51,12 @@ namespace CabinBookingWebApp.Controllers
         {
             ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Email");
             ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Description");
+            var sl = Enum.GetValues(typeof(BookingStatus)).Cast<BookingStatus>().Select(s => new SelectListItem()
+            {
+                Text = s.ToString(),
+                Value = s.ToString()
+            });
+            ViewData["Status"] = new SelectList(sl, "Value", "Text");
             return View();
         }
 
@@ -60,7 +65,7 @@ namespace CabinBookingWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CheckInDate,CheckOutDate,Price,UserId,CabinId")] Booking booking)
+        public async Task<IActionResult> Create([Bind("Id,CheckInDate,CheckOutDate,Price,UserId,CabinId,Status")] Booking booking)
         {
             if (ModelState.IsValid)
             {
@@ -70,13 +75,19 @@ namespace CabinBookingWebApp.Controllers
             }
             ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Email", booking.UserId);
             ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Description", booking.CabinId);
+            var sl = Enum.GetValues(typeof(BookingStatus)).Cast<BookingStatus>().Select(s => new SelectListItem()
+            {
+                Text= s.ToString(),
+                Value = s.ToString()
+            });
+            ViewData["Status"] = new SelectList(sl, "Value", "Text", booking.Status);
             return View(booking);
         }
 
         // GET: Bookings/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (id == null || _context.Booking == null)
             {
                 return NotFound();
             }
@@ -86,8 +97,14 @@ namespace CabinBookingWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", booking.UserId);
-            ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Id", booking.CabinId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Email", booking.UserId);
+            ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Description", booking.CabinId);
+            var sl = Enum.GetValues(typeof(BookingStatus)).Cast<BookingStatus>().Select(s => new SelectListItem()
+            {
+                Text = s.ToString(),
+                Value = s.ToString()
+            });
+            ViewData["Status"] = new SelectList(sl, "Value", "Text", booking.Status);
             return View(booking);
         }
 
@@ -96,7 +113,7 @@ namespace CabinBookingWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CheckInDate,CheckOutDate,Price,UserId,CabinId")] Booking booking)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CheckInDate,CheckOutDate,Price,UserId,CabinId,Status")] Booking booking)
         {
             if (id != booking.Id)
             {
@@ -123,15 +140,21 @@ namespace CabinBookingWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", booking.UserId);
-            ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Id", booking.CabinId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Email", booking.UserId);
+            ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Description", booking.CabinId);
+            var sl = Enum.GetValues(typeof(BookingStatus)).Cast<BookingStatus>().Select(s => new SelectListItem()
+            {
+                Text = s.ToString(),
+                Value = s.ToString()
+            });
+            ViewData["Status"] = new SelectList(sl, "Value", "Text", booking.Status);
             return View(booking);
         }
 
         // GET: Bookings/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (id == null || _context.Booking == null)
             {
                 return NotFound();
             }
@@ -153,15 +176,23 @@ namespace CabinBookingWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (_context.Booking == null)
+            {
+                return Problem("Entity set 'CabinBookingWebAppContext.Booking'  is null.");
+            }
             var booking = await _context.Booking.FindAsync(id);
-            _context.Booking.Remove(booking);
+            if (booking != null)
+            {
+                _context.Booking.Remove(booking);
+            }
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BookingExists(int id)
         {
-            return _context.Booking.Any(e => e.Id == id);
+          return (_context.Booking?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
