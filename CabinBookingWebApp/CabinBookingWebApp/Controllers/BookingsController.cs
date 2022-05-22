@@ -7,16 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CabinBookingWebApp.Data;
 using CabinBookingWebApp.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using CabinBookingWebApp.Authorization;
 
 namespace CabinBookingWebApp
 {
+   
     public class BookingsController : Controller
     {
         private readonly CabinBookingWebAppContext _context;
+        private IAuthorizationService _authorizationService { get; }
+        private UserManager<ApplicationUser> _userManager { get;  }
 
-        public BookingsController(CabinBookingWebAppContext context)
+
+        public BookingsController
+            (CabinBookingWebAppContext context,
+            IAuthorizationService authorizationService,
+            UserManager<ApplicationUser> userManager) 
         {
             _context = context;
+            _authorizationService = authorizationService;
+            _userManager = userManager; 
+           
         }
 
         // GET: Bookings
@@ -47,6 +60,7 @@ namespace CabinBookingWebApp
         }
 
         // GET: Bookings/Create
+        //[Authorize(Roles = "BookingAdministrators")]
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Email");
@@ -67,8 +81,13 @@ namespace CabinBookingWebApp
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CheckInDate,CheckOutDate,Price,UserId,CabinId,Status")] Booking booking)
         {
-            if (ModelState.IsValid)
-            {
+              if (ModelState.IsValid) { 
+                booking.UserId = _userManager.GetUserId(User);
+                var isAuthorized = await _authorizationService.AuthorizeAsync(User, booking, BookingOperations.Create);
+                if (!isAuthorized.Succeeded)
+                {
+                    return Forbid();
+                }
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
