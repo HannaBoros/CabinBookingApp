@@ -2,11 +2,14 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    ViewData["Title"] = "Bookings list";
+    ViewData["Title"] = "Admin Home";
 }
 
-<h2>Users Bookings list</h2>
+<h2>Welcome, Admin</h2>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Manage users</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cabins" asp-action="Index">Manage cabins</a>
+                        </li>
+                          <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Bookings" asp-action="Index">Manage bookings</a>
                         </li>
 <p>Hello from our Admin Home!</p>

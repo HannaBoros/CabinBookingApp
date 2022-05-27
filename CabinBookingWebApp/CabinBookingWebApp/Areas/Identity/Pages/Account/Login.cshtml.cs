@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using CabinBookingWebApp.Models;
+using CabinBookingWebApp.Authorization;
 
 namespace CabinBookingWebApp.Areas.Identity.Pages.Account
 {
@@ -105,7 +106,8 @@ namespace CabinBookingWebApp.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            string returnUrlAdmin = Url.Content("~/Admin");
+            string returnUrlUser = Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -114,9 +116,12 @@ namespace CabinBookingWebApp.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+               var user=await _signInManager.UserManager.FindByEmailAsync(Input.Email);
+                var roles = await _signInManager.UserManager.GetRolesAsync(user);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    returnUrl = roles.Contains(Constants.BookingAdministratorsRole) ? returnUrlAdmin : returnUrlUser;
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

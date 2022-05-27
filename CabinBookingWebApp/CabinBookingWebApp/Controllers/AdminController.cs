@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Text.Encodings.Web;
 
 namespace CabinBookingWebApp.Controllers
 {
+    [Authorize(Roles = "BookingAdministrators")]
     public class AdminController : Controller
     {
         public IActionResult Index()

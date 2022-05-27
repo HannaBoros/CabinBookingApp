@@ -13,7 +13,7 @@ using CabinBookingWebApp.Authorization;
 
 namespace CabinBookingWebApp
 {
-   
+    [Authorize(Roles = "BookingAdministrators")]
     public class BookingsController : Controller
     {
         private readonly CabinBookingWebAppContext _context;
@@ -82,12 +82,12 @@ namespace CabinBookingWebApp
         public async Task<IActionResult> Create([Bind("Id,CheckInDate,CheckOutDate,Price,UserId,CabinId,Status")] Booking booking)
         {
               if (ModelState.IsValid) { 
-                booking.UserId = _userManager.GetUserId(User);
-                var isAuthorized = await _authorizationService.AuthorizeAsync(User, booking, BookingOperations.Create);
-                if (!isAuthorized.Succeeded)
-                {
-                    return Forbid();
-                }
+                //booking.UserId = _userManager.GetUserId(User);
+                //var isAuthorized = await _authorizationService.AuthorizeAsync(User, booking, BookingOperations.Create);
+                //if (!isAuthorized.Succeeded)
+                //{
+                //    return Forbid();
+                //}
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
