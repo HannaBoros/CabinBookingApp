@@ -50,7 +50,7 @@ namespace CabinBookingWebApp.Controllers
         }
         // GET: Bookings/Create
         //[Authorize(Roles = "BookingAdministrators")]
-        public IActionResult Create(string? cabinId)
+        public async Task<IActionResult> Create(string cabinId)
         {
             var userId= _userManager.GetUserId(User);
 
@@ -78,7 +78,11 @@ namespace CabinBookingWebApp.Controllers
             ViewData["UserId"] = new SelectList(slu.AsEnumerable(), "Value", "Text");
             ViewData["CabinId"] = new SelectList(slc.AsEnumerable(), "Value", "Text");
             ViewData["Status"] = new SelectList(sls.AsEnumerable(), "Value", "Text");
-            ViewData["Price"] = 200;
+            var cabin = await _context.Cabins
+              .FirstOrDefaultAsync(m => m.Id.ToString() == cabinId);
+            ViewData["Price"] = "";
+            ViewData["PricePerNight"] = cabin.Price;
+
             return View();
         }
         // POST: Bookings/Create

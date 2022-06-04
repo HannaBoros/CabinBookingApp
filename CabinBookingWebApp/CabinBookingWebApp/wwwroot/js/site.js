@@ -9,11 +9,15 @@ function computePrice(event) {
     const diffTime = Math.abs(checkOutDate - checkInDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     console.log(diffDays);
+    const inputPriceElement = document.getElementById("Price");
+    const pricePerNight = document.getElementById("PricePerNight").value;
+    const total = parseInt(diffDays) * parseInt(pricePerNight);
+    inputPriceElement.value = total.toString();
+    console.log(total);
 
 }
 const checkOutInput = document.getElementById("CheckOutDate");
 const checkInInput = document.getElementById("CheckInDate");
 checkOutInput.addEventListener("change", computePrice);
-
 
 

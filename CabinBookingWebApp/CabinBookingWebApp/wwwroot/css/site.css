@@ -1,5 +1,11 @@
-html {
-    font-family: 'Tiro Bangla', serif;
+* {
+    text-decoration: none;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Charis SIL", serif !important;
     font-size: 14px;
 }
 a{
@@ -39,6 +45,11 @@ body {
 
 .logo {
     width: 175px;
+}
+
+.fix-logoName{
+    transform: translateY(-2.7px);
+
 }
 
 .home-text {
@@ -182,3 +193,72 @@ input:focus {
 input:-webkit-autofill {
     background-color: #1b4d3e !important;
 }
+
+
+.about-container {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    text-align: justify;
+    position: relative;
+  /*  margin-top: 18vh;*/
+}
+
+    .about-container div {
+        align-self: center;
+    }
+
+.about-title {
+    position: absolute;
+    font-size: 1.7rem;
+    transform: translateY(-70px);
+    text-shadow: 0px 0px 2px #000000;
+}
+
+.about-text {
+    font-size: 1rem;
+}
+
+.about-container div:first-child {
+    margin: auto 4rem;
+    margin-right: 9rem;
+}
+
+.bk-img {
+    opacity: 0.6;
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.square {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    position: absolute;
+    z-index: 5;
+    top: 50%;
+    transform: translate(-125px, -50%);
+    filter: drop-shadow(8px 8px 10px gray);
+}
+
+
+
+.social-div {
+    position: absolute;
+    bottom: 0;
+}
+
+.social-icons {
+    transform: translateY(-140px);
+}
+
+    .social-icons a {
+        height: 30px;
+        width: 30px;
+        display: inline-block;
+        margin: auto 10px;
+    }
+
+        .social-icons a:first-of-type {
+            margin-left: 0;
+        }

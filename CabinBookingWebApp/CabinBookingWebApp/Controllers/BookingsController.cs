@@ -71,6 +71,8 @@ namespace CabinBookingWebApp
                 Value = s.ToString()
             });
             ViewData["Status"] = new SelectList(sl, "Value", "Text");
+           
+
             return View();
         }
 
