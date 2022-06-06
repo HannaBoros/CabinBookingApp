@@ -29,6 +29,7 @@
                 <input asp-for="CheckOutDate" class="form-control" />
                 <span asp-validation-for="CheckOutDate" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label class="control-label">Price Per Night</label>
                 <input  readonly id="PricePerNight" class="form-control" value="@ViewData["PricePerNight"]" />
@@ -38,7 +39,12 @@
                 <input asp-for="Price" class="form-control" readonly />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-          
+            <div id="warning" style="display:block">
+               Not valid Date
+            </div>
+            <input hidden readonly id="DatesStart" class="form-control" value="@ViewData["DatesStart"]" />
+            <input hidden readonly id="DatesEnd" class="form-control" value="@ViewData["DatesEnd"]" />
+           
             <div hidden class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
                 <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>

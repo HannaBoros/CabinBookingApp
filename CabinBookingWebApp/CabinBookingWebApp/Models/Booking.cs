@@ -38,6 +38,7 @@ namespace CabinBookingWebApp.Models
     {
         Submitted,
         Approved,
-        Rejected
+        Rejected,
+        Expired
     }
 }

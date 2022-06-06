@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using CabinBookingWebApp.Authorization;
+using System.Configuration;
+using CabinBookingWebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,6 +69,13 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.SlidingExpiration = true;
 });
+
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+var emailConfig = builder.Configuration
+        .GetSection("EmailConfiguration")
+        .Get<EmailConfiguration>();
+builder.Services.AddSingleton(emailConfig);
+//builder.Services.Configure<EmailConfiguration>(builder.Configuration);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

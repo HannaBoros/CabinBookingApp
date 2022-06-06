@@ -3,7 +3,8 @@
 
 // Write your JavaScript code.
 function computePrice(event) {
-   
+
+
     const checkInDate = new Date(checkInInput.value);
     const checkOutDate = new Date(checkOutInput.value);
     const diffTime = Math.abs(checkOutDate - checkInDate);
@@ -15,9 +16,45 @@ function computePrice(event) {
     inputPriceElement.value = total.toString();
     console.log(total);
 
+    const startDatesString = document.getElementById("DatesStart").value;
+    const endDatesString = document.getElementById("DatesEnd").value;
+
+    const startDates = startDatesString.split(',').map(function (item) {
+        return parseInt(item);
+    });
+    const endDates = endDatesString.split(',').map(function (item) {
+        return parseInt(item);
+    });
+
+    var checkInDateMillis = checkInDate.getTime();
+    console.log("miliin", checkInDateMillis);
+    var checkOutDateMillis = checkOutDate.getTime();
+    var valid = true;
+    for (var i = 0; i < startDates.length; i++) {
+        var bookBeforeAll = checkInDateMillis < startDates[i] && checkOutDateMillis < startDates[i];
+        console.log('before:',bookBeforeAll);
+        var bookAfterAll = checkInDateMillis > endDates[i] && checkOutDateMillis > endDates[i];
+        console.log('after:',bookAfterAll);
+        if (!bookBeforeAll && !bookAfterAll) {
+            valid = false;
+            break;
+        }
+    }
+    const warningE = document.getElementById("warning");
+    if (!valid) {
+        warningE.style.display = "block";
+    }
+    else {
+        warningE.style.display = "none";
+    }
+    console.log(valid);
+    console.log(startDates);
+    console.log(endDates);
+
 }
 const checkOutInput = document.getElementById("CheckOutDate");
 const checkInInput = document.getElementById("CheckInDate");
 checkOutInput.addEventListener("change", computePrice);
+checkInInput.addEventListener("change", computePrice);
 
 

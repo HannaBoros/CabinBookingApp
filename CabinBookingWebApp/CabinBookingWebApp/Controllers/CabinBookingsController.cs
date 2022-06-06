@@ -1,5 +1,6 @@
 ﻿using CabinBookingWebApp.Data;
 using CabinBookingWebApp.Models;
+using CabinBookingWebApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,15 +16,19 @@ namespace CabinBookingWebApp.Controllers
         private IAuthorizationService _authorizationService { get; }
         private UserManager<ApplicationUser> _userManager { get; }
 
+        private readonly IEmailSender _emailSender;
+
 
         public CabinBookingsController
             (CabinBookingWebAppContext context,
             IAuthorizationService authorizationService,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager, 
+            IEmailSender emailSender)
         {
             _context = context;
             _authorizationService = authorizationService;
             _userManager = userManager;
+            _emailSender = emailSender;
 
         }
         // GET: Cabins
@@ -82,7 +87,16 @@ namespace CabinBookingWebApp.Controllers
               .FirstOrDefaultAsync(m => m.Id.ToString() == cabinId);
             ViewData["Price"] = "";
             ViewData["PricePerNight"] = cabin.Price;
-
+            var bookings= await _context.Booking.Where(b=>b.Status==BookingStatus.Approved).ToListAsync();
+            List<long> datesStart = new List<long>();
+            List<long> datesEnd = new List<long>();
+            foreach(Booking b in bookings)
+            {
+                datesStart.Add(((DateTimeOffset)b.CheckInDate).ToUnixTimeMilliseconds());
+                datesEnd.Add(((DateTimeOffset)b.CheckOutDate).ToUnixTimeMilliseconds());
+            }
+            ViewData["DatesStart"] = String.Join(",", datesStart);
+            ViewData["DatesEnd"] = String.Join(",", datesEnd);
             return View();
         }
         // POST: Bookings/Create
@@ -102,6 +116,8 @@ namespace CabinBookingWebApp.Controllers
                 //}
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
+                //var message=new Message(new string[] {"hannaboros19@gamil.com"}, "test email", "test content");
+                //await _emailSender.SendEmailAsync(message);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Email", booking.UserId);

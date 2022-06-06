@@ -133,7 +133,7 @@ body {
 }
 
 .img-icons {
-    margin: 50px auto !important;
+    margin: 63px auto !important;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     filter: invert(100%);
