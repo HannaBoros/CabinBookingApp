@@ -13,34 +13,34 @@
 </head>
 <body>
     <div class="container input-forms">
-<h4 class="home-text">Confirm Booking</h4>
-<hr />
+<h4 class="home-text text-center">Confirm Booking</h4>
 <div class="row">
-    <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="CheckInDate" class="control-label "></label>
-                <input asp-for="CheckInDate" class="form-control" />
+                <label asp-for="CheckInDate" class="control-label label-txt"></label>
+                <input asp-for="CheckInDate" class="form-control rounded-0" />
                 <span asp-validation-for="CheckInDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CheckOutDate" class="control-label"></label>
-                <input asp-for="CheckOutDate" class="form-control" />
+                <label asp-for="CheckOutDate" class="control-label label-txt"></label>
+                <input asp-for="CheckOutDate" class="form-control rounded-0" />
                 <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+            </div>
+            <div id="warning" class="text-danger home-text mb-2">
+               Not valid Date
             </div>
 
             <div class="form-group">
-                <label class="control-label">Price Per Night</label>
-                <input  readonly id="PricePerNight" class="form-control" value="@ViewData["PricePerNight"]" />
+                <label class="control-label label-txt">Price Per Night</label> 
+                 <p class="text-dark">€</p>
+                <input  readonly id="PricePerNight" class="form-control rounded-0" value="@ViewData["PricePerNight"]" />
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" readonly />
+                <label asp-for="Price" class="control-label label-txt"></label>
+                <p class="text-dark">€</p>
+                <input asp-for="Price" class="form-control rounded-0" readonly />
                 <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div id="warning" style="display:block">
-               Not valid Date
             </div>
             <input hidden readonly id="DatesStart" class="form-control" value="@ViewData["DatesStart"]" />
             <input hidden readonly id="DatesEnd" class="form-control" value="@ViewData["DatesEnd"]" />
@@ -58,10 +58,10 @@
                 <select asp-for="Status" class ="form-control" asp-items="ViewBag.Status"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="w-100 btn btn-primary btn-colors" />
             </div>
         </form>
-    </div>
+    
 </div>
 
 <div>

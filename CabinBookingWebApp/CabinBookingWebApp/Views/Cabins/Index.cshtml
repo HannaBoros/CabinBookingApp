@@ -4,13 +4,13 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="container transparent">
+<h1 class="home-text">Cabins</h1>
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<h4>
+    <a class="home-text" asp-action="Create">Create New</a>
+</h4>
+<table  class="table">
     <thead>
         <tr>
             <th>
@@ -28,7 +28,7 @@
              <th>
                 @Html.DisplayNameFor(model => model.MainImageUrl)
             </th>
-            <th></th>
+            <th>Manage</th>
         </tr>
     </thead>
     <tbody>
@@ -50,11 +50,13 @@
                 @Html.DisplayFor(modelItem => item.MainImageUrl)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="edit_button" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a class="details_button" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a class="delete_button" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+</div>
+

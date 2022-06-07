@@ -4,41 +4,40 @@
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h1>Details</h1>
+<div class="container input-forms">
+<h1 class="home-text">Details</h1>
 
 <div>
-    <h4>Cabin</h4>
-    <hr />
+    <h4 class="home-text">Cabin</h4>
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-2 home-text">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-10 label-txt">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-2 home-text">
             @Html.DisplayNameFor(model => model.Location)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-10 label-txt">
             @Html.DisplayFor(model => model.Location)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-2 home-text">
             @Html.DisplayNameFor(model => model.Rooms)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-10 label-txt">
             @Html.DisplayFor(model => model.Rooms)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-2 home-text">
             @Html.DisplayNameFor(model => model.Price)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-10 label-txt">
             @Html.DisplayFor(model => model.Price)
         </dd>
-         <dt class = "col-sm-2">
+         <dt class = "col-sm-2 home-text">
             @Html.DisplayNameFor(model => model.MainImageUrl)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-10 url_text label-txt">
             @Html.DisplayFor(model => model.MainImageUrl)
         </dd>
     </dl>
@@ -46,4 +45,5 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
+</div>
 </div>

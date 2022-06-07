@@ -5,11 +5,16 @@
     ViewData["Title"] = "Admin Home";
 }
 
-<h2>Welcome, Admin</h2>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cabins" asp-action="Index">Manage cabins</a>
-                        </li>
-                          <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Bookings" asp-action="Index">Manage bookings</a>
-                        </li>
-<p>Hello from our Admin Home!</p>
+<h2 class="text-center home-text">Welcome, Admin</h2>
+<div class="big_box">
+    <div>
+        <a class="centered" asp-area="" asp-controller="Cabins" asp-action="Index">Manage cabins</a>
+        <img class="manage_photo" src="https://images.unsplash.com/photo-1499695867787-121ffb7950bf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=851&q=80" alt="" />
+    </div>
+    <div>
+        <a class="centered" asp-area="" asp-controller="Bookings" asp-action="Index">Manage bookings</a>
+        <img class="manage_photo" src="https://images.pexels.com/photos/162583/work-workplace-office-computer-162583.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="" />
+    </div>
+</div>
+
+

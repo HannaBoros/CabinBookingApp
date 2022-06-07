@@ -12,6 +12,7 @@ using CabinBookingWebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 var connectionString = builder.Configuration.GetConnectionString("CabinBookingWebAppContext");
 builder.Services.AddDbContext<CabinBookingWebAppContext>(options =>
     options.UseSqlServer(connectionString));

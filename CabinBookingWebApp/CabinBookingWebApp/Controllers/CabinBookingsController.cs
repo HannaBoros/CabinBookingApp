@@ -87,7 +87,7 @@ namespace CabinBookingWebApp.Controllers
               .FirstOrDefaultAsync(m => m.Id.ToString() == cabinId);
             ViewData["Price"] = "";
             ViewData["PricePerNight"] = cabin.Price;
-            var bookings= await _context.Booking.Where(b=>b.Status==BookingStatus.Approved).ToListAsync();
+            var bookings= await _context.Booking.Where(b=>(b.Status==BookingStatus.Approved) && (cabin.Id.ToString()==cabinId)).ToListAsync();
             List<long> datesStart = new List<long>();
             List<long> datesEnd = new List<long>();
             foreach(Booking b in bookings)

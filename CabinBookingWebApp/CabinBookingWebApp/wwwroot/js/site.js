@@ -43,9 +43,11 @@ function computePrice(event) {
     const warningE = document.getElementById("warning");
     if (!valid) {
         warningE.style.display = "block";
+        
     }
     else {
         warningE.style.display = "none";
+        document.getElementById("createBtn").disabled = true;
     }
     console.log(valid);
     console.log(startDates);

@@ -13,50 +13,51 @@
 </head>
 <body>
 
-<h4>Booking</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="container input-forms">
+    <div>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <h1 class="home-text text-center">Create</h1>
+<h4 class="home-text text-center">Booking</h4>
+
             <div class="form-group">
-                <label asp-for="CheckInDate" class="control-label"></label>
-                <input asp-for="CheckInDate" class="form-control" />
+                <label asp-for="CheckInDate" class="control-label label-txt"></label>
+                <input asp-for="CheckInDate" class="form-control rounded-0" />
                 <span asp-validation-for="CheckInDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CheckOutDate" class="control-label"></label>
-                <input asp-for="CheckOutDate" class="form-control" />
+                <label asp-for="CheckOutDate" class="control-label label-txt"></label>
+                <input asp-for="CheckOutDate" class="form-control rounded-0" />
                 <span asp-validation-for="CheckOutDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <label asp-for="Price" class="control-label label-txt"></label>
+                <input asp-for="Price" class="form-control rounded-0" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
           
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+                <label asp-for="UserId" class="control-label label-txt"></label>
+                <select asp-for="UserId" class ="form-control rounded-0" asp-items="ViewBag.UserId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="CabinId" class="control-label"></label>
-                <select asp-for="CabinId" class ="form-control" asp-items="ViewBag.CabinId"></select>
+                <label asp-for="CabinId" class="control-label label-txt"></label>
+                <select asp-for="CabinId" class ="form-control rounded-0" asp-items="ViewBag.CabinId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class ="form-control" asp-items="ViewBag.Status"></select>
+                <label asp-for="Status" class="control-label label-txt"></label>
+                <select asp-for="Status" class ="form-control rounded-0" asp-items="ViewBag.Status"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="w-100 btn btn-primary btn-colors" />
             </div>
         </form>
-    </div>
-</div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+    </div>
+</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
