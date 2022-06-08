@@ -10,6 +10,7 @@ using CabinBookingWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using CabinBookingWebApp.Authorization;
+using CabinBookingWebApp.Services;
 
 namespace CabinBookingWebApp
 {
@@ -19,17 +20,20 @@ namespace CabinBookingWebApp
         private readonly CabinBookingWebAppContext _context;
         private IAuthorizationService _authorizationService { get; }
         private UserManager<ApplicationUser> _userManager { get;  }
+        private readonly IEmailSender _emailSender;
 
 
         public BookingsController
             (CabinBookingWebAppContext context,
             IAuthorizationService authorizationService,
-            UserManager<ApplicationUser> userManager) 
+            UserManager<ApplicationUser> userManager,
+            IEmailSender emailSender) 
         {
             _context = context;
             _authorizationService = authorizationService;
-            _userManager = userManager; 
-           
+            _userManager = userManager;
+            _emailSender = emailSender;
+
         }
 
         // GET: Bookings
@@ -147,6 +151,13 @@ namespace CabinBookingWebApp
                 {
                     _context.Update(booking);
                     await _context.SaveChangesAsync();
+                    var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == booking.UserId);
+                    if (user == null)
+                    {
+                        return View();
+                    }
+                    var message = new Message(new string[] { user.Email }, EmailUtilities.SubjectBookingEdited, EmailUtilities.ContentBookingEdited(booking.Status.ToString()));
+                    await _emailSender.SendEmailAsync(message);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -161,14 +172,14 @@ namespace CabinBookingWebApp
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Email", booking.UserId);
-            ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Description", booking.CabinId);
-            var sl = Enum.GetValues(typeof(BookingStatus)).Cast<BookingStatus>().Select(s => new SelectListItem()
-            {
-                Text = s.ToString(),
-                Value = s.ToString()
-            });
-            ViewData["Status"] = new SelectList(sl, "Value", "Text", booking.Status);
+            //ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Email", booking.UserId);
+            //ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Description", booking.CabinId);
+            //var sl = Enum.GetValues(typeof(BookingStatus)).Cast<BookingStatus>().Select(s => new SelectListItem()
+            //{
+            //    Text = s.ToString(),
+            //    Value = s.ToString()
+            //});
+            //ViewData["Status"] = new SelectList(sl, "Value", "Text", booking.Status);
             return View(booking);
         }
 

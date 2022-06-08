@@ -28,7 +28,7 @@
                 <span asp-validation-for="CheckOutDate" class="text-danger"></span>
             </div>
             <div id="warning" class="text-danger home-text mb-2">
-               Not valid Date
+           
             </div>
 
             <div class="form-group">
@@ -58,7 +58,7 @@
                 <select asp-for="Status" class ="form-control" asp-items="ViewBag.Status"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="w-100 btn btn-primary btn-colors" />
+                <input type="submit" id="createBtn" value="Create" class="w-100 btn btn-primary btn-colors" />
             </div>
         </form>
     

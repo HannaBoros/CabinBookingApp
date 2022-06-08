@@ -87,7 +87,7 @@ namespace CabinBookingWebApp.Controllers
               .FirstOrDefaultAsync(m => m.Id.ToString() == cabinId);
             ViewData["Price"] = "";
             ViewData["PricePerNight"] = cabin.Price;
-            var bookings= await _context.Booking.Where(b=>(b.Status==BookingStatus.Approved) && (cabin.Id.ToString()==cabinId)).ToListAsync();
+            var bookings= await _context.Booking.Where(b=>(b.Status==BookingStatus.Approved) && (b.CabinId.ToString()==cabinId)).ToListAsync();
             List<long> datesStart = new List<long>();
             List<long> datesEnd = new List<long>();
             foreach(Booking b in bookings)
@@ -116,18 +116,23 @@ namespace CabinBookingWebApp.Controllers
                 //}
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
-                //var message=new Message(new string[] {"hannaboros19@gamil.com"}, "test email", "test content");
-                //await _emailSender.SendEmailAsync(message);
+                var user =await _context.Users.FirstOrDefaultAsync(u => u.Id == booking.UserId);
+                if (user == null)
+                {
+                    return View();
+                }
+                var message = new Message( new string[] { user.Email }, EmailUtilities.SubjectBookingSubmited, EmailUtilities.ContentBookingSubmited);
+                await _emailSender.SendEmailAsync(message);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Email", booking.UserId);
-            ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Description", booking.CabinId);
-            var sl = Enum.GetValues(typeof(BookingStatus)).Cast<BookingStatus>().Select(s => new SelectListItem()
-            {
-                Text = s.ToString(),
-                Value = s.ToString()
-            });
-            ViewData["Status"] = new SelectList(sl, "Value", "Text", booking.Status);
+            //ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Email", booking.UserId);
+            //ViewData["CabinId"] = new SelectList(_context.Cabins, "Id", "Description", booking.CabinId);
+            //var sl = Enum.GetValues(typeof(BookingStatus)).Cast<BookingStatus>().Select(s => new SelectListItem()
+            //{
+            //    Text = s.ToString(),
+            //    Value = s.ToString()
+            //});
+            //ViewData["Status"] = new SelectList(sl, "Value", "Text", booking.Status);
             return View(booking);
         }
     }

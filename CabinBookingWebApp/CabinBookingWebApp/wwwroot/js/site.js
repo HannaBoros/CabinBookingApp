@@ -2,6 +2,20 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+function updateWarning(text, show){
+    const warningE = document.getElementById("warning");
+
+    if (show) {
+        warningE.style.display = "block";
+        warningE.textContent = text;
+        document.getElementById("createBtn").disabled = true;
+    }
+    else {
+        warningE.style.display = "none";
+        document.getElementById("createBtn").disabled = false;
+    }
+}
+
 function computePrice(event) {
 
 
@@ -30,6 +44,10 @@ function computePrice(event) {
     console.log("miliin", checkInDateMillis);
     var checkOutDateMillis = checkOutDate.getTime();
     var valid = true;
+    if (checkOutDateMillis < checkInDateMillis) {
+        updateWarning("Date is  invalid", true);
+        return;
+    }
     for (var i = 0; i < startDates.length; i++) {
         var bookBeforeAll = checkInDateMillis < startDates[i] && checkOutDateMillis < startDates[i];
         console.log('before:',bookBeforeAll);
@@ -40,15 +58,7 @@ function computePrice(event) {
             break;
         }
     }
-    const warningE = document.getElementById("warning");
-    if (!valid) {
-        warningE.style.display = "block";
-        
-    }
-    else {
-        warningE.style.display = "none";
-        document.getElementById("createBtn").disabled = true;
-    }
+    updateWarning("Date is not available", !valid);
     console.log(valid);
     console.log(startDates);
     console.log(endDates);
