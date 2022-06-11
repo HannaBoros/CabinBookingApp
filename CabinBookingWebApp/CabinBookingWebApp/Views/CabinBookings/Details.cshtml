@@ -4,44 +4,49 @@
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="container" style="background-color: black !important">
-<h1>Details</h1>
+<div class="container input-forms">
 
-<div>
-    <h4>Cabin</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
+    <div>
+        <h4 class="home-text text-center">Cabin Name</h4>
+
+        <div class="text-center my-3">
+            <img class="cabin-img" src="
+                @Html.DisplayFor(model => model.MainImageUrl)" />
+        </div>
+
+        <div class=" text-center my-3">
+            <b class=" home-text">   @Html.DisplayNameFor(model => model.Description)</b>
             @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Location)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Location)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Rooms)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Rooms)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <a asp-action="Create" asp-route-cabinId="@Model?.Id">Book</a>
-    </dl>
+        </div>
 
-     
+
+        <div class="text-center my-3">
+            <b class=" home-text">  @Html.DisplayNameFor(model => model.Location)</b>
+            @Html.DisplayFor(model => model.Location)
+        </div>
+
+
+        <div class="text-center my-3">
+            <b class=" home-text">   @Html.DisplayNameFor(model => model.Rooms)</b>
+            @Html.DisplayFor(model => model.Rooms)
+        </div>
+
+
+        <div class="text-center my-3">
+            <b class=" home-text">    @Html.DisplayNameFor(model => model.Price)</b>
+            @Html.DisplayFor(model => model.Price) €
+        </div>
+
+
+        <a class="w-50 btn-colors btn text-light d-block m-auto my-3" asp-action="Create" asp-route-cabinId="@Model?.Id">Book</a>
+
+
+
+        <div class="text-center">
+            <a asp-action="Index">Back to Cabins</a>
+
+        </div>
+
+    </div>
 </div>
-<div>
-    <a asp-action="Index">Back to Cabins</a>
- 
-</div>
-</div>
+

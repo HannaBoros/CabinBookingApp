@@ -9,6 +9,7 @@ function updateWarning(text, show){
         warningE.style.display = "block";
         warningE.textContent = text;
         document.getElementById("createBtn").disabled = true;
+        document.getElementById("createBtn").style.background = "#1b4d3e";
     }
     else {
         warningE.style.display = "none";
