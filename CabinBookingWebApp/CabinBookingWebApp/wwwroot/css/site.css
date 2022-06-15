@@ -337,9 +337,11 @@ input:-webkit-autofill {
         color: white;
         text-shadow: 0px 0px 10px #000000;
     }
-.url_text{
-    width:55ch;
-  
+.url_text {
+    width: 55ch;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /*.nav-pills > li > a.active {

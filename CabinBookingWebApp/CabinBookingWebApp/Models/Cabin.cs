@@ -15,7 +15,8 @@ namespace CabinBookingWebApp.Models
 
         public string? MainImageUrl { get; set; }
    
-
+        public string? CabinName { get; set; }
+        public int? PersonCapability { get; set; }
         public ICollection<Booking>? Bookings { get; set; }
                             
     }

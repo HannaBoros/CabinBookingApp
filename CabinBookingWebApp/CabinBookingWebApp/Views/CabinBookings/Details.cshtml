@@ -7,7 +7,7 @@
 <div class="container input-forms">
 
     <div>
-        <h4 class="home-text text-center">Cabin Name</h4>
+        <h4 class="home-text text-center"> @Html.DisplayFor(model => model.CabinName)</h4>
 
         <div class="text-center my-3">
             <img class="cabin-img" src="
@@ -29,6 +29,11 @@
         <div class="text-center my-3">
             <b class=" home-text">   @Html.DisplayNameFor(model => model.Rooms)</b>
             @Html.DisplayFor(model => model.Rooms)
+        </div>
+        
+        <div class="text-center my-3">
+            <b class=" home-text">   @Html.DisplayNameFor(model => model.PersonCapability)</b>
+            @Html.DisplayFor(model => model.PersonCapability)
         </div>
 
 

@@ -44,8 +44,11 @@ function computePrice(event) {
     var checkInDateMillis = checkInDate.getTime();
     console.log("miliin", checkInDateMillis);
     var checkOutDateMillis = checkOutDate.getTime();
+    var todayDate = Date.now();
+  
+    console.log("today", todayDate)
     var valid = true;
-    if (checkOutDateMillis < checkInDateMillis) {
+    if (checkOutDateMillis < checkInDateMillis || todayDate > checkInDateMillis) {
         updateWarning("Date is  invalid", true);
         return;
     }
